@@ -5,11 +5,11 @@ import { Appointment } from '../dto/appointment.dto';
 import { NgClass } from '@angular/common';
 
 @Component({
-  selector: 'app-appointment-list',
+  selector: 'app-list-appointment',
   standalone: true,
   imports: [RouterLink,NgClass],
-  templateUrl: './appointment-list.component.html',
-  styleUrl: './appointment-list.component.css'
+  templateUrl: './list-appointment.component.html',
+  styleUrl: './list-appointment.component.css'
 })
 export class AppointmentListComponent implements OnInit {
 
@@ -24,5 +24,19 @@ export class AppointmentListComponent implements OnInit {
     this.appointmentServices.getAllAppointments().subscribe((response: Appointment[]) => {
       this.appointments = response;
     })
+  }
+  deleteAppointment(appointmentId: number, index: number) {
+    if (confirm('Are you sure you want to delete this appointment?')) {
+      // Call your service to delete the appointment
+      this.appointmentServices.deleteAppointment(appointmentId).subscribe({
+        next: () => {
+          this.appointments.splice(index, 1);
+          console.log('Appointment deleted successfully');
+        },
+        error: (err) => {
+          console.error('Error deleting appointment:', err);
+        }
+      });
+    }
   }
 }

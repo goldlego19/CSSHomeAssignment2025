@@ -1,0 +1,196 @@
+<div class="container mt-4">
+
+    <div class="card bg-dark text-light border-secondary">
+        <div class="card-header bg-secondary text-white">
+            <h5><i class="bi bi-pencil-square me-2"></i>Update Appointment</h5>
+        </div>
+        <div class="card-body">
+            <form novalidate [formGroup]="appointmentForm" (ngSubmit)="submitForm()">
+                <fieldset>
+                    <!-- Patient Information -->
+                    <div class="form-group mt-3">
+                        <label for="patientName" class="form-label">Patient Name</label>
+                        <input type="text" class="form-control bg-dark text-light border-secondary" 
+                               id="patientName" formControlName="patientName" placeholder="Enter patient name">
+                        @if(shouldProcessControlValidationMessages("patientName")){
+                            <div class="text-danger mt-1">
+                                @if(appointmentForm.get("patientName")!.hasError("required")){
+                                    <small>Patient name is required</small>
+                                }
+                            </div>
+                        }
+                    </div>
+    
+                    <!-- Animal Type -->
+                    <div class="form-group mt-3">
+                        <label for="animalType" class="form-label">Animal Type</label>
+                        <select class="form-select bg-dark text-light border-secondary" 
+                                id="animalType" formControlName="animalType">
+                            <option value="">Select animal type</option>
+                            <option value="Dog">Dog</option>
+                            <option value="Cat">Cat</option>
+                            <option value="Rabbit">Rabbit</option>
+                            <option value="Bird">Bird</option>
+                            <option value="Reptile">Reptile</option>
+                        </select>
+                        @if(shouldProcessControlValidationMessages("animalType")){
+                            <div class="text-danger mt-1">
+                                @if(appointmentForm.get("animalType")!.hasError("required")){
+                                    <small>Animal type is required</small>
+                                }
+                            </div>
+                        }
+                    </div>
+    
+                    <!-- Owner Information -->
+                    <div class="row mt-3">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="ownerIdCardNumber" class="form-label">Owner ID Card Number</label>
+                                <input type="text" class="form-control bg-dark text-light border-secondary" 
+                                       id="ownerIdCardNumber" formControlName="ownerIdCardNumber" 
+                                       placeholder="Enter ID card number">
+                                @if(shouldProcessControlValidationMessages("ownerIdCardNumber")){
+                                    <div class="text-danger mt-1">
+                                        @if(appointmentForm.get("ownerIdCardNumber")!.hasError("required")){
+                                            <small>ID card number is required</small>
+                                        }
+                                    </div>
+                                }
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="ownerContactNumber" class="form-label">Owner Contact Number</label>
+                                <input type="tel" class="form-control bg-dark text-light border-secondary" 
+                                       id="ownerContactNumber" formControlName="ownerContactNumber" 
+                                       placeholder="Enter contact number">
+                                @if(shouldProcessControlValidationMessages("ownerContactNumber")){
+                                    <div class="text-danger mt-1">
+                                        @if(appointmentForm.get("ownerContactNumber")!.hasError("required")){
+                                            <small>Contact number is required</small>
+                                        }
+                                    </div>
+                                }
+                            </div>
+                        </div>
+                    </div>
+    
+                    <div class="row mt-3">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="ownerName" class="form-label">Owner Name</label>
+                                <input type="text" class="form-control bg-dark text-light border-secondary" 
+                                       id="ownerName" formControlName="ownerName" placeholder="Enter owner name">
+                                @if(shouldProcessControlValidationMessages("ownerName")){
+                                    <div class="text-danger mt-1">
+                                        @if(appointmentForm.get("ownerName")!.hasError("required")){
+                                            <small>Owner name is required</small>
+                                        }
+                                    </div>
+                                }
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="ownerSurname" class="form-label">Owner Surname</label>
+                                <input type="text" class="form-control bg-dark text-light border-secondary" 
+                                       id="ownerSurname" formControlName="ownerSurname" placeholder="Enter owner surname">
+                                @if(shouldProcessControlValidationMessages("ownerSurname")){
+                                    <div class="text-danger mt-1">
+                                        @if(appointmentForm.get("ownerSurname")!.hasError("required")){
+                                            <small>Owner surname is required</small>
+                                        }
+                                    </div>
+                                }
+                            </div>
+                        </div>
+                    </div>
+    
+                    <!-- Appointment Details -->
+                    <div class="row mt-3">
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label for="appointmentDate" class="form-label">Date</label>
+                                <input type="date" class="form-control bg-dark text-light border-secondary" 
+                                       id="appointmentDate" formControlName="appointmentDate">
+                                @if(shouldProcessControlValidationMessages("appointmentDate")){
+                                    <div class="text-danger mt-1">
+                                        @if(appointmentForm.get("appointmentDate")!.hasError("required")){
+                                            <small>Date is required</small>
+                                        }
+                                    </div>
+                                }
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label for="appointmentTime" class="form-label">Time</label>
+                                <input type="time" class="form-control bg-dark text-light border-secondary" 
+                                       id="appointmentTime" formControlName="appointmentTime">
+                                @if(shouldProcessControlValidationMessages("appointmentTime")){
+                                    <div class="text-danger mt-1">
+                                        @if(appointmentForm.get("appointmentTime")!.hasError("required")){
+                                            <small>Time is required</small>
+                                        }
+                                    </div>
+                                }
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label for="appointmentDuration" class="form-label">Duration (minutes)</label>
+                                <input type="number" class="form-control bg-dark text-light border-secondary" 
+                                       id="appointmentDuration" formControlName="appointmentDuration" 
+                                       placeholder="Duration in minutes">
+                                @if(shouldProcessControlValidationMessages("appointmentDuration")){
+                                    <div class="text-danger mt-1">
+                                        @if(appointmentForm.get("appointmentDuration")!.hasError("required")){
+                                            <small>Duration is required</small>
+                                        }
+                                    </div>
+                                }
+                            </div>
+                        </div>
+                    </div>
+    
+                    <!-- Reason and Notes -->
+                    <div class="form-group mt-3">
+                        <label for="reasonForAppointment" class="form-label">Reason for Appointment</label>
+                        <textarea class="form-control bg-dark text-light border-secondary" 
+                                  id="reasonForAppointment" formControlName="reasonForAppointment" 
+                                  rows="2" placeholder="Enter reason for appointment"></textarea>
+                        @if(shouldProcessControlValidationMessages("reasonForAppointment")){
+                            <div class="text-danger mt-1">
+                                @if(appointmentForm.get("reasonForAppointment")!.hasError("required")){
+                                    <small>Reason is required</small>
+                                }
+                            </div>
+                        }
+                    </div>
+    
+                    <div class="form-group mt-3">
+                        <label for="vetNotes" class="form-label">Veterinary Notes</label>
+                        <textarea class="form-control bg-dark text-light border-secondary" 
+                                  id="vetNotes" formControlName="vetNotes" 
+                                  rows="3" placeholder="Enter veterinary notes"></textarea>
+                        @if(shouldProcessControlValidationMessages("vetNotes")){
+                            <div class="text-danger mt-1">
+                                @if(appointmentForm.get("vetNotes")!.hasError("required")){
+                                    <small>Notes are required</small>
+                                }
+                            </div>
+                        }
+                    </div>
+    
+                </fieldset>
+    
+                <div class="mt-4 d-flex justify-content-end gap-2">
+                    <button type="submit" class="btn btn-warning" [disabled]="!appointmentForm.valid">
+                        <i class="bi bi-save2 me-2"></i>Update Appointment
+                      </button>
+                </div>
+            </form>
+        </div>
+    </div>
+    </div>

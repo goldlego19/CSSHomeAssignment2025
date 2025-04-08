@@ -5,11 +5,11 @@ import { Router } from '@angular/router';
 import { NgClass } from '@angular/common';
 
 @Component({
-  selector: 'app-appointment-detail',
+  selector: 'app-view-appointment-details',
   standalone: true,
   imports: [NgClass],
-  templateUrl: './appointment-detail.component.html',
-  styleUrl: './appointment-detail.component.css'
+  templateUrl: './view-appointment-details.component.html',
+  styleUrl: './view-appointment-details.component.css'
 })
 export class AppointmentDetailComponent {
 
