@@ -12,7 +12,6 @@ export class AppointmentStatusPipe implements PipeTransform {
     if (!day || !month || !year || !hour || isNaN(minute)) return 'Invalid';
 
     const appointmentDateTime = new Date(year, month - 1, day, hour, minute);
-    console.log(appointmentDateTime);
     const now = new Date();
     return appointmentDateTime > now ? 'Upcoming' : 'Past';
   }
