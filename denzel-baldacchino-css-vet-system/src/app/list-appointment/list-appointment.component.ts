@@ -2,15 +2,17 @@ import { Component, OnInit } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { AppointmentService } from '../services/appointment.service';
 import { Appointment } from '../dto/appointment.dto';
-import { NgClass } from '@angular/common';
+import { DatePipe, NgClass } from '@angular/common';
 import Swal from 'sweetalert2';
+import { AppointmentStatusPipe } from '../pipes/appointment-status.pipe';
 
 @Component({
   selector: 'app-list-appointment',
   standalone: true,
-  imports: [RouterLink,NgClass],
+  imports: [RouterLink,NgClass,AppointmentStatusPipe],
   templateUrl: './list-appointment.component.html',
-  styleUrl: './list-appointment.component.css'
+  styleUrl: './list-appointment.component.css',
+  providers: [DatePipe]
 })
 export class AppointmentListComponent implements OnInit {
 
@@ -78,5 +80,13 @@ export class AppointmentListComponent implements OnInit {
         );
       }
     });
+  }
+
+
+  exportToExcel() {
+    return null;
+  }
+  exportToPDF() {
+    return null;
   }
 }
