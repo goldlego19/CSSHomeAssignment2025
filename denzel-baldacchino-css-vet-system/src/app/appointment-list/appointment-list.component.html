@@ -1,0 +1,63 @@
+@if (appointments != null && appointments.length > 0) {
+    <div class="table-responsive mt-3 mx-5 border p-2" style="border-radius: 16px">
+      <table class="table table-dark table-hover table-striped align-middle">
+        <thead class="table-secondary">
+          <tr>
+            <th class="bg-dark text-light">ID</th>
+            <th class="bg-dark text-light">Patient</th>
+            <th class="bg-dark text-light">Animal</th>
+            <th class="bg-dark text-light">Owner</th>
+            <th class="bg-dark text-light">Date</th>
+            <th class="bg-dark text-light">Time</th>
+            <th class="bg-dark text-light">Duration</th>
+            <th class="bg-dark text-light text-center">Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (appointment of appointments; track $index) {
+            <tr>
+              <td class="text-info fw-bold">{{appointment.appointmentId}}</td>
+              <td>{{appointment.patientName}}</td>
+              <td>
+                <span class="badge" 
+                      [ngClass]="{
+                        'bg-primary': appointment.animalType === 'Dog',
+                        'bg-success': appointment.animalType === 'Cat',
+                        'bg-warning text-dark': appointment.animalType === 'Rabbit',
+                        'bg-danger': appointment.animalType === 'Bird',
+                        'bg-purple': appointment.animalType === 'Reptile'
+                      }">
+                  {{appointment.animalType}}
+                </span>
+              </td>
+              <td>{{appointment.ownerName}} {{appointment.ownerSurname}}</td>
+              <td class="text-light">{{appointment.appointmentDate}}</td>
+              <td class="text-light">{{appointment.appointmentTime}}</td>
+              <td>{{appointment.appointmentDuration}} min</td>
+              <td class="text-center"> 
+                <div class="d-flex gap-2 flex-wrap"> 
+                  <a class="btn btn-sm btn-outline-primary flex-grow-1 text-nowrap" 
+                     [routerLink]="['/appointments',appointment.appointmentId]">
+                    <i class="bi bi-eye-fill"></i> Details
+                  </a>
+                  <a class="btn btn-sm btn-outline-success flex-grow-1 text-nowrap" 
+                     [routerLink]="['/appointments',appointment.appointmentId]">
+                    <i class="bi bi-pencil-fill"></i> Update
+                  </a>
+                  <a class="btn btn-sm btn-outline-danger flex-grow-1 text-nowrap" 
+                     [routerLink]="['/appointments',appointment.appointmentId]">
+                    <i class="bi bi-trash-fill"></i> Delete
+                  </a>
+                </div>
+                
+              </td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+  } @else {
+    <div class="alert alert-dark mt-3">
+      <i class="bi bi-calendar-x"></i> No appointments found
+    </div>
+  }

@@ -1,0 +1,21 @@
+.card {
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4);
+    background-color: #1a1a1a; 
+    border: 1px solid #2d2d2d; 
+}
+
+
+.card-header {
+    background-color: #252525 !important; 
+    border-bottom: 1px solid #333 !important;
+}
+
+.list-group-item {
+    transition: background-color 0.3s ease;
+    background-color: #1e1e1e; 
+    border-color: #2a2a2a;
+}
+
+
+.bg-purple { background-color: #6f42c1; }

@@ -1,0 +1,59 @@
+<div class="container justify-content-center mt-5">
+    <div class="card bg-dark text-light p-4" style="border-radius: 16px; border-color: #fff;">
+      <div class="card-body">
+        <h2 class="text-center mb-4">Login</h2>
+
+        @if (errorMessage) {
+            <div class="alert alert-danger">
+              {{ errorMessage }}
+            </div>
+          }
+        
+        <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+          <!-- Email Field -->
+          <div class="mb-3">
+            <label for="email" class="form-label">Email</label>
+            <div class="input-group">
+              <span class="input-group-text bg-secondary border-secondary text-light">
+                <i class="bi bi-envelope-fill"></i>
+              </span>
+              <input type="email" class="form-control bg-dark text-light border-secondary" 
+                     id="email" formControlName="username" placeholder="Enter your email" required>
+              @if(shouldProcessControlValidationMessages("username")){
+                <div class="text-danger">
+                    @if(loginForm.get('username')!.hasError('required')){
+                      <span>Email is required</span>
+                    }
+                </div>
+              }
+            </div>
+          </div>
+  
+          <!-- Password Field -->
+          <div class="mb-4">
+            <label for="password" class="form-label">Password</label>
+            <div class="input-group">
+              <span class="input-group-text bg-secondary border-secondary text-light">
+                <i class="bi bi-lock-fill"></i>
+              </span>
+              <input type="password" class="form-control bg-dark text-light border-secondary" 
+                     id="password" formControlName="password" placeholder="Enter your password" required>
+                @if(shouldProcessControlValidationMessages("password")){
+                    <div class="text-danger">
+                        @if(loginForm.get('password')!.hasError('required')){
+                            <span>Password is required</span>
+                        }
+                    </div>
+                    }
+            </div>
+          </div>
+  
+          <!-- Submit Button -->
+          <button type="submit" class="btn btn-primary w-100 py-2" [disabled]="!loginForm.valid">
+            <i class="bi bi-box-arrow-in-right me-2"></i> Login
+          </button>
+        </form>
+      </div>
+    </div>
+  </div>
+  

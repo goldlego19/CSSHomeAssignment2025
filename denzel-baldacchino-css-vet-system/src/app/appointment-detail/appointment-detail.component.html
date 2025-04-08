@@ -1,0 +1,137 @@
+@if (appointment){
+<div class="container mt-4">
+    <div class="card">
+      <div class="card-header"> 
+        <h2 class="card-title text-light mb-0">
+          <i class="bi bi-calendar2-heart me-2"></i>Appointment Details
+        </h2>
+      </div>
+      <div class="card-body">
+        <div class="row">
+          <!-- Patient Information -->
+          <div class="col-md-6">
+            <div class="card mb-3 bg-dark text-light border-secondary">
+              <div class="card-header bg-secondary text-white">
+                <h5 class="card-subtitle">
+                  <i class="bi bi-heart-pulse me-2"></i>Patient Information
+                </h5>
+              </div>
+              <div class="card-body">
+                <ul class="list-group list-group-flush bg-transparent">
+                  <li class="list-group-item bg-dark text-light border-secondary d-flex align-items-center">
+                    <strong class="me-2">Name:</strong> 
+                    <span class="text-info">{{ appointment.patientName }}</span>
+                  </li>
+                  <li class="list-group-item bg-dark text-light border-secondary d-flex align-items-center">
+                    <strong class="me-2">Animal Type:</strong> 
+                    <span class="badge" 
+                      [ngClass]="{
+                        'bg-primary': appointment.animalType === 'Dog',
+                        'bg-success': appointment.animalType === 'Cat',
+                        'bg-warning text-dark': appointment.animalType === 'Rabbit',
+                        'bg-danger': appointment.animalType === 'Bird',
+                        'bg-purple': appointment.animalType === 'Reptile'
+                      }">
+                  {{appointment.animalType}}
+                </span>
+                  </li>
+                  <li class="list-group-item bg-dark text-light border-secondary d-flex align-items-center">
+                    <strong class="me-2">Reason:</strong> 
+                    <span class="text-warning">{{ appointment.reasonForAppointment }}</span>
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </div>
+  
+          <!-- Owner Information -->
+          <div class="col-md-6">
+            <div class="card mb-3 bg-dark text-light border-secondary">
+              <div class="card-header bg-secondary text-white">
+                <h5 class="card-subtitle">
+                  <i class="bi bi-person-vcard me-2"></i>Owner Information
+                </h5>
+              </div>
+              <div class="card-body">
+                <ul class="list-group list-group-flush bg-transparent">
+                  <li class="list-group-item bg-dark text-light border-secondary d-flex align-items-center">
+                    <strong class="me-2">Name:</strong> 
+                    <span class="text-info">{{ appointment.ownerName }} {{ appointment.ownerSurname }}</span>
+                  </li>
+                  <li class="list-group-item bg-dark text-light border-secondary d-flex align-items-center">
+                    <strong class="me-2">ID Card:</strong> 
+                    <span class="text-info">{{ appointment.ownerIdCardNumber }}</span>
+                  </li>
+                  <li class="list-group-item bg-dark text-light border-secondary d-flex align-items-center">
+                    <strong class="me-2">Contact:</strong> 
+                    <span class="text-success">{{ appointment.ownerContactNumber }}</span>
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+  
+        <!-- Appointment Details -->
+        <div class="card bg-dark text-light border-secondary">
+          <div class="card-header bg-secondary text-white">
+            <h5 class="card-subtitle">
+              <i class="bi bi-clock-history me-2"></i>Appointment Details
+            </h5>
+          </div>
+          <div class="card-body">
+            <div class="row">
+              <div class="col-md-4 mb-2">
+                <strong class="me-2">Date:</strong> 
+                <span class="text-info">{{ appointment.appointmentDate }}</span>
+              </div>
+              <div class="col-md-4 mb-2">
+                <strong class="me-2">Time:</strong> 
+                <span class="text-info">{{ appointment.appointmentTime }}</span>
+              </div>
+              <div class="col-md-4 mb-2">
+                <strong class="me-2">Duration:</strong> 
+                <span class="text-info">{{ appointment.appointmentDuration }} minutes</span>
+              </div>
+            </div>
+          </div>
+        </div>
+  
+        <!-- Vet Notes (Conditional) -->
+        @if (appointment.vetNotes && appointment.vetNotes.length > 0) {
+        <div class="card mt-3 bg-dark text-light border-secondary">
+          <div class="card-header bg-secondary text-white">
+            <h5 class="card-subtitle">
+              <i class="bi bi-file-earmark-text me-2"></i>Veterinary Notes
+            </h5>
+          </div>
+          <div class="card-body">
+            <p class="card-text text-light">{{ appointment.vetNotes }}</p>
+          </div>
+        </div>
+        }@else{
+            <div class="card mt-3 bg-dark text-light border-secondary">
+                <div class="card-header bg-secondary text-white">
+                  <h5 class="card-subtitle">
+                    <i class="bi bi-file-earmark-text me-2"></i>Veterinary Notes
+                  </h5>
+                </div>
+                <div class="card-body">
+                  <p class="card-text text-light">No Vet Notes Listed....</p>
+                </div>
+              </div>
+        }
+  
+        <!-- Action Buttons -->
+        <div class="mt-4 d-flex">
+          <button class="btn btn-outline-light me-3"(click)="onBackButtonClick()">
+            <i class="bi bi-arrow-left me-2"></i>Back
+          </button>
+          <!-- <button class="btn btn-outline-primary">
+            <i class="bi bi-pencil me-2"></i>Edit
+          </button> -->
+        </div>
+      </div>
+    </div>
+  </div>
+}
