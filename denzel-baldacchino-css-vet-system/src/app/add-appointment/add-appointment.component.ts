@@ -5,6 +5,7 @@ import { Router } from '@angular/router';
 import { AppointmentAddUpdate } from '../dto/appointment-add-update.dto';
 import { Appointment } from '../dto/appointment.dto';
 import { DatePipe } from '@angular/common';
+import Swal from 'sweetalert2';
 
 
 @Component({
@@ -18,6 +19,7 @@ import { DatePipe } from '@angular/common';
 export class AddAppointmentComponent {
 
   appointmentForm!: FormGroup;
+  isSubmitting = false;
 
   constructor(private formBuilder: FormBuilder, private appointmentService: AppointmentService, private router:Router,private datepipe:DatePipe) { }
 
@@ -40,6 +42,8 @@ export class AddAppointmentComponent {
   submitForm() {
     if (this.appointmentForm.invalid) return;
     
+    this.isSubmitting = true;
+    
     const raw = this.appointmentForm.value;
     const formattedDate = this.datepipe.transform(raw.appointmentDate, 'dd/MM/yyyy');
     
@@ -47,11 +51,42 @@ export class AddAppointmentComponent {
       ...raw,
       appointmentDate: formattedDate?.toString(),
     }
+    Swal.fire({
+      title: 'Adding Appointment',
+      html:'Please Wait...',
+      allowOutsideClick: false,
+      didOpen: () => {
+        Swal.showLoading();
+      }
+    });
+
     console.log(JSON.stringify(appointmentToAdd));
-    this.appointmentService.addAppointment(appointmentToAdd).subscribe((addedAppointment:Appointment) => {
-      console.log(JSON.stringify(addedAppointment));
-      this.router.navigate(['/appointments']);
-    });  
+    this.appointmentService.addAppointment(appointmentToAdd).subscribe({
+      next: (addedAppointment: Appointment) => {
+        Swal.fire({
+          title: 'Success!',
+          text: 'Appointment created successfully',
+          icon: 'success',
+          confirmButtonText: 'OK'
+        }).then((result) => {
+          if (result.isConfirmed) {
+            // Navigate with state to trigger notification in list component
+            this.router.navigate(['/appointments'], {
+              state: { created: true }
+            });
+          }
+        });
+      },
+      error: (error) => {
+        this.isSubmitting = false;
+        Swal.fire({
+          title: 'Error!',
+          text: 'Failed to create appointment: ' + (error.error?.message || 'Unknown error'),
+          icon: 'error',
+          confirmButtonText: 'OK'
+        });
+      }
+    });
   }
 
   shouldProcessControlValidationMessages(controlName:string){

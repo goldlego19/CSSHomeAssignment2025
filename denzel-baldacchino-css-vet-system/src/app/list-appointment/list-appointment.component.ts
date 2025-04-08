@@ -3,6 +3,7 @@ import { RouterLink } from '@angular/router';
 import { AppointmentService } from '../services/appointment.service';
 import { Appointment } from '../dto/appointment.dto';
 import { NgClass } from '@angular/common';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-list-appointment',
@@ -15,6 +16,7 @@ export class AppointmentListComponent implements OnInit {
 
   ngOnInit(): void {
     this.initialiseAppointments();
+    this.checkForCreationNotification();
   }
   appointments: Appointment[] = [];
 
@@ -25,18 +27,56 @@ export class AppointmentListComponent implements OnInit {
       this.appointments = response;
     })
   }
-  deleteAppointment(appointmentId: number, index: number) {
-    if (confirm('Are you sure you want to delete this appointment?')) {
-      // Call your service to delete the appointment
-      this.appointmentServices.deleteAppointment(appointmentId).subscribe({
-        next: () => {
-          this.appointments.splice(index, 1);
-          console.log('Appointment deleted successfully');
-        },
-        error: (err) => {
-          console.error('Error deleting appointment:', err);
-        }
+
+  private checkForCreationNotification() {
+    const created = history.state?.created;
+    if (created) {
+      Swal.fire({
+        position: 'center',
+        icon: 'success',
+        title: 'New appointment created successfully!',
+        showConfirmButton: false,
+        timer: 3000
       });
+      // Clear the state
+      history.replaceState({ ...history.state, created: false }, '');
     }
+  }
+
+  confirmDelete(appointmentId: number, index: number) {
+    Swal.fire({
+      title: 'Are you sure?',
+      text: "You won't be able to revert this!",
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Yes, delete it!'
+    }).then((result) => {
+      if (result.isConfirmed) {
+        this.deleteAppointment(appointmentId, index);
+      }
+    });
+  }
+
+  deleteAppointment(appointmentId: number, index: number) {
+    this.appointmentServices.deleteAppointment(appointmentId).subscribe({
+      next: () => {
+        this.appointments.splice(index, 1);
+        Swal.fire(
+          'Deleted!',
+          'The appointment has been deleted.',
+          'success'
+        );
+      },
+      error: (err) => {
+        console.error('Error deleting appointment:', err);
+        Swal.fire(
+          'Error!',
+          'Failed to delete the appointment.',
+          'error'
+        );
+      }
+    });
   }
 }
