@@ -8,41 +8,42 @@ import { AuthorisationService } from "./authorisation.service";
 @Injectable({
     providedIn: "root"
 })
-export class AppointmentService{
+export class AppointmentService {
 
-    
-    
-    endpoint: string = "http://localhost:8080/appointment"
-    token: string;
-    httpHeader: { headers: HttpHeaders };
+    endpoint: string = "http://localhost:8080/appointment";
 
-    constructor(private http: HttpClient, private authService: AuthorisationService) {
-        this.token = this.authService.getToken() || '';
-        this.httpHeader = {
+    constructor(private http: HttpClient, private authService: AuthorisationService) {}
+
+    private getHttpHeaders(): { headers: HttpHeaders } {
+        const token = this.authService.getToken() || '';
+        return {
             headers: new HttpHeaders({
                 'Content-Type': 'application/json',
-                'Authorization': 'Bearer ' + this.token
+                'Authorization': 'Bearer ' + token
             })
         };
     }
-    getAllAppointments():Observable<Appointment[]> {
-        return this.http.get<Appointment[]>(this.endpoint, this.httpHeader);
+
+    getAllAppointments(): Observable<Appointment[]> {
+        return this.http.get<Appointment[]>(this.endpoint, this.getHttpHeaders());
     }
-    getAppointmentById(id: number):Observable<Appointment> {
-        return this.http.get<Appointment>(this.endpoint + "/" + id, this.httpHeader);
+
+    getAppointmentById(id: number): Observable<Appointment> {
+        return this.http.get<Appointment>(this.endpoint + "/" + id, this.getHttpHeaders());
     }
-    addAppointment(appointment: AppointmentAddUpdate):Observable<Appointment> {
-        return this.http.post<Appointment>(this.endpoint, appointment, this.httpHeader);
+
+    addAppointment(appointment: AppointmentAddUpdate): Observable<Appointment> {
+        return this.http.post<Appointment>(this.endpoint, appointment, this.getHttpHeaders());
     }
-    updateAppointment(appointmentToUpdate:AppointmentAddUpdate, id:number){
-        return this.http.put<Appointment>(this.endpoint+"/"+id,appointmentToUpdate,this.httpHeader)
+
+    updateAppointment(appointmentToUpdate: AppointmentAddUpdate, id: number): Observable<Appointment> {
+        return this.http.put<Appointment>(this.endpoint + "/" + id, appointmentToUpdate, this.getHttpHeaders());
     }
-    deleteAppointment(id: number):Observable<Appointment> {
+
+    deleteAppointment(id: number): Observable<Appointment> {
         console.log("Deleting appointment with id: " + id);
         console.log("Endpoint: " + this.endpoint + "/" + id);
-        console.log("Headers: ", this.httpHeader);
-        console.log("Token: " + this.token);
-        return this.http.delete<Appointment>(this.endpoint + "/" + id, this.httpHeader);
+        console.log("Headers: ", this.getHttpHeaders());
+        return this.http.delete<Appointment>(this.endpoint + "/" + id, this.getHttpHeaders());
     }
-    
 }

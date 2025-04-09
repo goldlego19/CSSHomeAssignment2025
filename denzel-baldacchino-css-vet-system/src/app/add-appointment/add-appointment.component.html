@@ -187,6 +187,7 @@
                     }
                 </div>
 
+                @if(['ADMIN', 'VET'].includes(getUserRole() || '')){
                 <div class="form-group mt-3">
                     <label for="vetNotes" class="form-label">Veterinary Notes</label>
                     <textarea class="form-control bg-dark text-light border-secondary" 
@@ -200,6 +201,7 @@
                         </div>
                     }
                 </div>
+            }
 
             </fieldset>
 

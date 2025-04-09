@@ -8,6 +8,7 @@ import { DatePipe } from '@angular/common';
 import Swal from 'sweetalert2';
 import { futureDateValidator } from '../validators/future-date.validator';
 import { futureTimeValidator } from '../validators/future-time.validator';
+import { AuthorisationService } from '../services/authorisation.service';
 
 @Component({
   selector: 'app-add-appointment',
@@ -21,23 +22,43 @@ export class AddAppointmentComponent {
 
   appointmentForm!: FormGroup;
   isSubmitting = false;
-
-  constructor(private formBuilder: FormBuilder, private appointmentService: AppointmentService, private router:Router,private datepipe:DatePipe) { }
-
+  userRole: string | null = null;
+  constructor(private formBuilder: FormBuilder, private appointmentService: AppointmentService, private router:Router,private datepipe:DatePipe, private authService:AuthorisationService) { }
+  getUserRole(): string | null {
+    return this.authService.getUserRole();
+  }
   ngOnInit(): void {
-    this.appointmentForm = this.formBuilder.group({
-      patientName: ['', [Validators.required]],
-      animalType: ['', [Validators.required]],
-      ownerIdCardNumber: ['', [Validators.required, Validators.pattern(/^\d+[A-Za-z]$/)]], // Numeric string with an alphabetical character at the end
-      ownerName: ['', [Validators.required]],
-      ownerSurname: ['', [Validators.required]],
-      ownerContactNumber: ['', [Validators.required, Validators.pattern(/^\d+$/), Validators.minLength(8)]], // Numeric, non-negative, at least 8 characters
-      appointmentDate: ['', [Validators.required, futureDateValidator()]], // Custom validator for future date
-      appointmentTime: ['', [Validators.required, futureTimeValidator('appointmentDate')]], // Custom validator for future time
-      appointmentDuration: ['', [Validators.required]],
-      reasonForAppointment: ['', [Validators.required]],
-      vetNotes: ['', [Validators.required]]
-    });
+    this.userRole = this.getUserRole();
+    // if the user is a receptionist, the vet notes field will be optional
+    if (this.userRole== 'RECEPTIONIST') {
+      this.appointmentForm = this.formBuilder.group({
+        patientName: ['', [Validators.required]],
+        animalType: ['', [Validators.required]],
+        ownerIdCardNumber: ['', [Validators.required, Validators.pattern(/^\d+[A-Za-z]$/)]], // Numeric string with an alphabetical character at the end
+        ownerName: ['', [Validators.required]],
+        ownerSurname: ['', [Validators.required]],
+        ownerContactNumber: ['', [Validators.required, Validators.pattern(/^\d+$/), Validators.minLength(8)]], // Numeric, non-negative, at least 8 characters
+        appointmentDate: ['', [Validators.required, futureDateValidator()]], // Custom validator for future date
+        appointmentTime: ['', [Validators.required, futureTimeValidator('appointmentDate')]], // Custom validator for future time
+        appointmentDuration: ['', [Validators.required]],
+        reasonForAppointment: ['', [Validators.required]],
+        vetNotes: ['']
+      });
+    }else{
+      this.appointmentForm = this.formBuilder.group({
+        patientName: ['', [Validators.required]],
+        animalType: ['', [Validators.required]],
+        ownerIdCardNumber: ['', [Validators.required, Validators.pattern(/^\d+[A-Za-z]$/)]], // Numeric string with an alphabetical character at the end
+        ownerName: ['', [Validators.required]],
+        ownerSurname: ['', [Validators.required]],
+        ownerContactNumber: ['', [Validators.required, Validators.pattern(/^\d+$/), Validators.minLength(8)]], // Numeric, non-negative, at least 8 characters
+        appointmentDate: ['', [Validators.required, futureDateValidator()]], // Custom validator for future date
+        appointmentTime: ['', [Validators.required, futureTimeValidator('appointmentDate')]], // Custom validator for future time
+        appointmentDuration: ['', [Validators.required]],
+        reasonForAppointment: ['', [Validators.required]],
+        vetNotes: ['', [Validators.required]]
+      });
+    }
     //this will revalidate the appointment time validator when the date changes
     this.appointmentForm.get('appointmentDate')?.valueChanges.subscribe(() => {
       this.appointmentForm.get('appointmentTime')?.updateValueAndValidity();

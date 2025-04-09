@@ -6,7 +6,7 @@
     <span class="navbar-brand ms-3 fw-bold">{{title}}</span>
     <ul class="navbar-nav">
         @if(isLoggedIn()) {
-            @if(['ADMIN', 'VET'].includes(getUserRole() || '')){
+            @if(['ADMIN', 'RECEPTIONIST'].includes(getUserRole() || '')){
                 <li class="nav-item">
                     <a class="nav-link" routerLink="/add" routerLinkActive="active">Add Appointment</a>
                 </li>

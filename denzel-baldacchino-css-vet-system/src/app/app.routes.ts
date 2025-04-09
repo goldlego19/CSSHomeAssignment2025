@@ -7,10 +7,10 @@ import { UpdateAppointmentComponent } from './update-appointment/update-appointm
 import { AuthGuard } from './guard/auth.guard';
 
 export const routes: Routes = [
-    { path: "add", component: AddAppointmentComponent, canActivate: [AuthGuard], data: { roles: ['ADMIN', 'VET'] } },
+    { path: "add", component: AddAppointmentComponent, canActivate: [AuthGuard], data: { roles: ['ADMIN', 'RECEPTIONIST'] } },
     { path: "appointments", component: AppointmentListComponent, canActivate: [AuthGuard] },
     { path: "appointments/:id", component: AppointmentDetailComponent, canActivate: [AuthGuard] },
-    { path: "appointments/update/:id", component: UpdateAppointmentComponent, canActivate: [AuthGuard], data: { roles: ['ADMIN','VET'] } },
+    { path: "appointments/update/:id", component: UpdateAppointmentComponent, canActivate: [AuthGuard]},
     { path: "login", component: LoginComponent },
     { path: "", redirectTo: "/appointments", pathMatch: "full" },
     { path: "**", redirectTo: "/login" }, 

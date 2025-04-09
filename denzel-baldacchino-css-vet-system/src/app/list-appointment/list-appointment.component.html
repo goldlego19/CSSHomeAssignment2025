@@ -52,21 +52,24 @@
               <td class="text-center"> 
                 <div class="d-flex gap-2 flex-wrap"> 
                   <a class="btn btn-sm btn-outline-primary flex-grow-1 text-nowrap" 
-                     [routerLink]="['/appointments',appointment.appointmentId]">
+                     [routerLink]="['/appointments', appointment.appointmentId]">
                     <i class="bi bi-eye-fill"></i> Details
                   </a>
-                  @if(['ADMIN', 'VET'].includes(getUserRole() || '')){
-                  <a class="btn btn-sm btn-outline-success flex-grow-1 text-nowrap" 
-                     [routerLink]="['/appointments/update',appointment.appointmentId]">
-                    <i class="bi bi-pencil-fill"></i> Update
-                  </a>
-                  <a class="btn btn-sm btn-outline-danger flex-grow-1 text-nowrap" 
-                  (click)="confirmDelete(appointment.appointmentId, $index)">
-                    <i class="bi bi-trash-fill"></i> Delete
-                  </a>
-                }
+                  @if (['ADMIN', 'VET'].includes(getUserRole() || '') || 
+                       (getUserRole() === 'RECEPTIONIST' && 
+                        (appointment.appointmentDate | appointmentStatus:appointment.appointmentTime) === 'Upcoming')) {
+                    <a class="btn btn-sm btn-outline-success flex-grow-1 text-nowrap" 
+                       [routerLink]="['/appointments/update', appointment.appointmentId]">
+                      <i class="bi bi-pencil-fill"></i> Update
+                    </a>
+                  }
+                  @if (['ADMIN'].includes(getUserRole() || '')) {
+                    <a class="btn btn-sm btn-outline-danger flex-grow-1 text-nowrap" 
+                       (click)="confirmDelete(appointment.appointmentId, $index)">
+                      <i class="bi bi-trash-fill"></i> Delete
+                    </a>
+                  }
                 </div>
-                
               </td>
             </tr>
           }
