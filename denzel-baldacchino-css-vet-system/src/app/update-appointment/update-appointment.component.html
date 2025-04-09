@@ -50,13 +50,16 @@
                                 <input type="text" class="form-control bg-dark text-light border-secondary" 
                                        id="ownerIdCardNumber" formControlName="ownerIdCardNumber" 
                                        placeholder="Enter ID card number">
-                                @if(shouldProcessControlValidationMessages("ownerIdCardNumber")){
-                                    <div class="text-danger mt-1">
-                                        @if(appointmentForm.get("ownerIdCardNumber")!.hasError("required")){
-                                            <small>ID card number is required</small>
-                                        }
-                                    </div>
-                                }
+                                       @if(shouldProcessControlValidationMessages("ownerIdCardNumber")){
+                                        <div class="text-danger mt-1">
+                                            @if(appointmentForm.get("ownerIdCardNumber")!.hasError("required")){
+                                                <small>ID card number is required</small>
+                                            }
+                                            @if(appointmentForm.get("ownerIdCardNumber")!.hasError("pattern")){
+                                                <small>ID card number must be numeric and end in an alphabetical character</small>
+                                            }
+                                        </div>
+                                    }
                             </div>
                         </div>
                         <div class="col-md-6">
@@ -65,13 +68,19 @@
                                 <input type="tel" class="form-control bg-dark text-light border-secondary" 
                                        id="ownerContactNumber" formControlName="ownerContactNumber" 
                                        placeholder="Enter contact number">
-                                @if(shouldProcessControlValidationMessages("ownerContactNumber")){
-                                    <div class="text-danger mt-1">
-                                        @if(appointmentForm.get("ownerContactNumber")!.hasError("required")){
-                                            <small>Contact number is required</small>
-                                        }
-                                    </div>
-                                }
+                                       @if(shouldProcessControlValidationMessages("ownerContactNumber")){
+                                        <div class="text-danger mt-1">
+                                            @if(appointmentForm.get("ownerContactNumber")!.hasError("required")){
+                                                <small>Contact number is required</small>
+                                            }
+                                            @else if(appointmentForm.get("ownerContactNumber")!.hasError("pattern")){
+                                                <small>Contact number must be numeric</small>
+                                            }
+                                            @else if(appointmentForm.get("ownerContactNumber")!.hasError("minlength")){
+                                                <small>Contact number must be at least 8 digits</small>
+                                            }
+                                        </div>
+                                    }
                             </div>
                         </div>
                     </div>
@@ -114,13 +123,17 @@
                                 <label for="appointmentDate" class="form-label">Date</label>
                                 <input type="date" class="form-control bg-dark text-light border-secondary" 
                                        id="appointmentDate" formControlName="appointmentDate">
-                                @if(shouldProcessControlValidationMessages("appointmentDate")){
-                                    <div class="text-danger mt-1">
-                                        @if(appointmentForm.get("appointmentDate")!.hasError("required")){
-                                            <small>Date is required</small>
-                                        }
-                                    </div>
-                                }
+                                       @if(shouldProcessControlValidationMessages("appointmentDate")){
+                                        <div class="text-danger mt-1">
+                                            @if(appointmentForm.get("appointmentDate")!.hasError("required")){
+                                                <small>Date is required</small>
+                                            }
+                                        
+                                            @if(appointmentForm.get("appointmentDate")!.hasError("pastDate")){
+                                                <small>Date cannot be in the past</small>
+                                            }
+                                        </div>
+                                    }
                             </div>
                         </div>
                         <div class="col-md-4">
@@ -128,13 +141,17 @@
                                 <label for="appointmentTime" class="form-label">Time</label>
                                 <input type="time" class="form-control bg-dark text-light border-secondary" 
                                        id="appointmentTime" formControlName="appointmentTime">
-                                @if(shouldProcessControlValidationMessages("appointmentTime")){
-                                    <div class="text-danger mt-1">
-                                        @if(appointmentForm.get("appointmentTime")!.hasError("required")){
-                                            <small>Time is required</small>
-                                        }
-                                    </div>
-                                }
+                                       @if(shouldProcessControlValidationMessages("appointmentTime")){
+                                        <div class="text-danger mt-1">
+                                            @if(appointmentForm.get("appointmentTime")!.hasError("required")){
+                                                <small>Time is required</small>
+                                            }
+                                            
+                                            @if(appointmentForm.get("appointmentTime")!.hasError("pastTime")){
+                                                <small>Time cannot be in the past</small>
+                                            }
+                                        </div>
+                                    }
                             </div>
                         </div>
                         <div class="col-md-4">

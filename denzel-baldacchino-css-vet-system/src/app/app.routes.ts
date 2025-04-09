@@ -4,12 +4,14 @@ import { AppointmentListComponent } from './list-appointment/list-appointment.co
 import { AddAppointmentComponent } from './add-appointment/add-appointment.component';
 import { LoginComponent } from './login/login.component';
 import { UpdateAppointmentComponent } from './update-appointment/update-appointment.component';
+import { AuthGuard } from './guard/auth.guard';
 
 export const routes: Routes = [
-    {path: "add", component:AddAppointmentComponent},
-    {path: "appointments", component:AppointmentListComponent},
-    {path: "appointments/:id", component:AppointmentDetailComponent},
-    {path: "appointments/update/:id", component:UpdateAppointmentComponent},
-    {path: "login", component:LoginComponent},
-    {path: "", redirectTo: "/appointments", pathMatch: "full"},
+    { path: "add", component: AddAppointmentComponent, canActivate: [AuthGuard], data: { roles: ['ADMIN', 'VET'] } },
+    { path: "appointments", component: AppointmentListComponent, canActivate: [AuthGuard] },
+    { path: "appointments/:id", component: AppointmentDetailComponent, canActivate: [AuthGuard] },
+    { path: "appointments/update/:id", component: UpdateAppointmentComponent, canActivate: [AuthGuard], data: { roles: ['ADMIN','VET'] } },
+    { path: "login", component: LoginComponent },
+    { path: "", redirectTo: "/appointments", pathMatch: "full" },
+    { path: "**", redirectTo: "/login" }, 
 ];

@@ -5,6 +5,8 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { AppointmentService } from '../services/appointment.service';
 import { Appointment } from '../dto/appointment.dto';
 import { AppointmentAddUpdate } from '../dto/appointment-add-update.dto';
+import { futureDateValidator } from '../validators/future-date.validator';
+import { futureTimeValidator } from '../validators/future-time.validator';
 
 @Component({
   selector: 'app-update-appointment',
@@ -29,17 +31,20 @@ export class UpdateAppointmentComponent {
 
   ngOnInit(): void {
     this.appointmentForm = this.formBuilder.group({
-      patientName: ['', Validators.required],
-      animalType: ['', Validators.required],
-      ownerIdCardNumber: ['', Validators.required],
-      ownerName: ['', Validators.required],
-      ownerSurname: ['', Validators.required],
-      ownerContactNumber: ['', Validators.required],
-      appointmentDate: ['', Validators.required],
-      appointmentTime: ['', Validators.required],
-      appointmentDuration: ['', Validators.required],
-      reasonForAppointment: ['', Validators.required],
-      vetNotes: ['', Validators.required],
+      patientName: ['', [Validators.required]],
+            animalType: ['', [Validators.required]],
+            ownerIdCardNumber: ['', [Validators.required, Validators.pattern(/^\d+[A-Za-z]$/)]], // Numeric string with an alphabetical character at the end
+            ownerName: ['', [Validators.required]],
+            ownerSurname: ['', [Validators.required]],
+            ownerContactNumber: ['', [Validators.required, Validators.pattern(/^\d+$/), Validators.minLength(8)]], // Numeric, non-negative, at least 8 characters
+            appointmentDate: ['', [Validators.required, futureDateValidator()]], // Custom validator for future date
+            appointmentTime: ['', [Validators.required, futureTimeValidator('appointmentDate')]], // Custom validator for future time
+            appointmentDuration: ['', [Validators.required]],
+            reasonForAppointment: ['', [Validators.required]],
+            vetNotes: ['', [Validators.required]]
+    });
+    this.appointmentForm.get('appointmentDate')?.valueChanges.subscribe(() => {
+      this.appointmentForm.get('appointmentTime')?.updateValueAndValidity();
     });
     this.route.paramMap.subscribe(params => {
       const idParam = params.get('id');
@@ -52,8 +57,8 @@ export class UpdateAppointmentComponent {
 
   loadAppointment(id: number): void {
     this.appointmentService.getAppointmentById(id).subscribe((appointment: Appointment) => {
-      const [day, month, year] = this.datepipe.transform(appointment.appointmentDate, 'dd/MM/yyyy')!.split('/');
-      const formattedDate = `${year}-${month}-${day}`; // dd/MM/yyyy format
+      const [day, month, year] = appointment.appointmentDate!.toString().split('/');
+      const formattedDate = `${year}-${month}-${day}`;
 
       this.appointmentForm.patchValue({
         ...appointment,

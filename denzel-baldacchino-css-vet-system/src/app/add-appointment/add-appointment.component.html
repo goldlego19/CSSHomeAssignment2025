@@ -17,6 +17,7 @@
                             @if(appointmentForm.get("patientName")!.hasError("required")){
                                 <small>Patient name is required</small>
                             }
+
                         </div>
                     }
                 </div>
@@ -55,6 +56,9 @@
                                     @if(appointmentForm.get("ownerIdCardNumber")!.hasError("required")){
                                         <small>ID card number is required</small>
                                     }
+                                    @if(appointmentForm.get("ownerIdCardNumber")!.hasError("pattern")){
+                                        <small>ID card number must be numeric and end in an alphabetical character</small>
+                                    }
                                 </div>
                             }
                         </div>
@@ -65,13 +69,19 @@
                             <input type="tel" class="form-control bg-dark text-light border-secondary" 
                                    id="ownerContactNumber" formControlName="ownerContactNumber" 
                                    placeholder="Enter contact number">
-                            @if(shouldProcessControlValidationMessages("ownerContactNumber")){
-                                <div class="text-danger mt-1">
-                                    @if(appointmentForm.get("ownerContactNumber")!.hasError("required")){
-                                        <small>Contact number is required</small>
-                                    }
-                                </div>
-                            }
+                                   @if(shouldProcessControlValidationMessages("ownerContactNumber")){
+                                    <div class="text-danger mt-1">
+                                        @if(appointmentForm.get("ownerContactNumber")!.hasError("required")){
+                                            <small>Contact number is required</small>
+                                        }
+                                        @else if(appointmentForm.get("ownerContactNumber")!.hasError("pattern")){
+                                            <small>Contact number must be numeric</small>
+                                        }
+                                        @else if(appointmentForm.get("ownerContactNumber")!.hasError("minlength")){
+                                            <small>Contact number must be at least 8 digits</small>
+                                        }
+                                    </div>
+                                }
                         </div>
                     </div>
                 </div>
@@ -119,6 +129,10 @@
                                     @if(appointmentForm.get("appointmentDate")!.hasError("required")){
                                         <small>Date is required</small>
                                     }
+                                
+                                    @if(appointmentForm.get("appointmentDate")!.hasError("pastDate")){
+                                        <small>Date cannot be in the past</small>
+                                    }
                                 </div>
                             }
                         </div>
@@ -132,6 +146,10 @@
                                 <div class="text-danger mt-1">
                                     @if(appointmentForm.get("appointmentTime")!.hasError("required")){
                                         <small>Time is required</small>
+                                    }
+                                    
+                                    @if(appointmentForm.get("appointmentTime")!.hasError("pastTime")){
+                                        <small>Time cannot be in the past</small>
                                     }
                                 </div>
                             }

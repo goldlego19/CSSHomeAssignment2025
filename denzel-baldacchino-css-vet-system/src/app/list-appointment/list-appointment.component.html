@@ -55,6 +55,7 @@
                      [routerLink]="['/appointments',appointment.appointmentId]">
                     <i class="bi bi-eye-fill"></i> Details
                   </a>
+                  @if(['ADMIN', 'VET'].includes(getUserRole() || '')){
                   <a class="btn btn-sm btn-outline-success flex-grow-1 text-nowrap" 
                      [routerLink]="['/appointments/update',appointment.appointmentId]">
                     <i class="bi bi-pencil-fill"></i> Update
@@ -63,6 +64,7 @@
                   (click)="confirmDelete(appointment.appointmentId, $index)">
                     <i class="bi bi-trash-fill"></i> Delete
                   </a>
+                }
                 </div>
                 
               </td>

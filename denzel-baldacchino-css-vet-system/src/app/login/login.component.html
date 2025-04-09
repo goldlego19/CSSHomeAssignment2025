@@ -11,7 +11,7 @@
         
         <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
           <!-- Email Field -->
-          <div class="mb-3">
+          <div class="form-group mt-3 mb-3">
             <label for="email" class="form-label">Email</label>
             <div class="input-group">
               <span class="input-group-text bg-secondary border-secondary text-light">
@@ -19,14 +19,15 @@
               </span>
               <input type="email" class="form-control bg-dark text-light border-secondary" 
                      id="email" formControlName="username" placeholder="Enter your email" required>
+            </div>
+
               @if(shouldProcessControlValidationMessages("username")){
-                <div class="text-danger">
+                <div class="text-danger mt-1">
                     @if(loginForm.get('username')!.hasError('required')){
-                      <span>Email is required</span>
+                      <small>Email is required</small>
                     }
                 </div>
               }
-            </div>
           </div>
   
           <!-- Password Field -->
@@ -38,14 +39,15 @@
               </span>
               <input type="password" class="form-control bg-dark text-light border-secondary" 
                      id="password" formControlName="password" placeholder="Enter your password" required>
+            </div>
+
                 @if(shouldProcessControlValidationMessages("password")){
-                    <div class="text-danger">
+                    <div class="text-danger mt-1">
                         @if(loginForm.get('password')!.hasError('required')){
-                            <span>Password is required</span>
+                            <small>Password is required</small>
                         }
                     </div>
                     }
-            </div>
           </div>
   
           <!-- Submit Button -->

@@ -9,6 +9,7 @@ import * as Exceljs from 'exceljs';
 import * as FileSaver from 'file-saver';
 import {jsPDF} from 'jspdf';
 import 'jspdf-autotable';
+import { AuthorisationService } from '../services/authorisation.service';
 @Component({
   selector: 'app-list-appointment',
   standalone: true,
@@ -26,12 +27,16 @@ export class AppointmentListComponent implements OnInit {
   }
   appointments: Appointment[] = [];
 
-  constructor(private appointmentServices:AppointmentService) { }
+  constructor(private appointmentServices:AppointmentService,private authService:AuthorisationService) { }
 
   initialiseAppointments(){
     this.appointmentServices.getAllAppointments().subscribe((response: Appointment[]) => {
       this.appointments = response;
     })
+  }
+
+  getUserRole(): string | null {
+    return this.authService.getUserRole();
   }
 
   private checkForCreationNotification() {
